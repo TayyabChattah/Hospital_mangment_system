@@ -1,0 +1,22 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}Dr. {{ doctor.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Dr. {{ doctor.name }}</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+        <p><strong>Available Days:</strong> {{ doctor.available_days }}</p>
+        <p><strong>Available Hours:</strong> {{ doctor.available_from|time:"H:i" }} - {{ doctor.available_to|time:"H:i" }}</p>
+        <p><strong>Room Number:</strong> {{ doctor.room_number }}</p>
+        
+        <div class="mt-4">
+            <a href="{% url 'doctors:doctor-update' doctor.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'doctors:doctor-list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

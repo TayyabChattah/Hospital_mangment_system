@@ -1,0 +1,53 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{% if form.instance.id %}Edit{% else %}Add{% endif %} Patient{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.id %}Edit{% else %}Add New{% endif %} Patient</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.non_field_errors }}
+    
+    <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col">
+            {{ form.age.label_tag }}
+            {{ form.age }}
+            {{ form.age.errors }}
+        </div>
+        <div class="col">
+            {{ form.gender.label_tag }}
+            {{ form.gender }}
+            {{ form.gender.errors }}
+        </div>
+    </div>
+    
+    <div class="mb-3">
+        {{ form.phone_number.label_tag }}
+        {{ form.phone_number }}
+        {{ form.phone_number.errors }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.address.label_tag }}
+        {{ form.address }}
+        {{ form.address.errors }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'patients:patient-list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

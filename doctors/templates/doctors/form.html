@@ -1,0 +1,53 @@
+{% extends 'doctors/base.html' %}
+
+{% block title %}{% if form.instance.id %}Edit{% else %}Add{% endif %} Doctor{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.id %}Edit{% else %}Add New{% endif %} Doctor</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.non_field_errors }}
+    
+    <div class="mb-3">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.specialization.label_tag }}
+        {{ form.specialization }}
+        {{ form.specialization.errors }}
+    </div>
+    
+    <div class="mb-3">
+        {{ form.available_days.label_tag }}
+        {{ form.available_days }}
+        {{ form.available_days.errors }}
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col">
+            {{ form.available_from.label_tag }}
+            {{ form.available_from }}
+            {{ form.available_from.errors }}
+        </div>
+        <div class="col">
+            {{ form.available_to.label_tag }}
+            {{ form.available_to }}
+            {{ form.available_to.errors }}
+        </div>
+    </div>
+    
+    <div class="mb-3">
+        {{ form.room_number.label_tag }}
+        {{ form.room_number }}
+        {{ form.room_number.errors }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'doctors:doctor-list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

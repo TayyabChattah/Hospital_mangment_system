@@ -1,0 +1,82 @@
+{% extends 'appointments/base.html' %}
+
+{% block title %}{% if form.instance.id %}Edit{% else %}Schedule{% endif %} Appointment{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.id %}Edit{% else %}Schedule New{% endif %} Appointment</h1>
+
+<form method="post">
+    {% csrf_token %}
+    
+    {{ form.non_field_errors }}
+    
+    <div class="row mb-3">
+        <div class="col">
+            {{ form.patient.label_tag }}
+            {{ form.patient }}
+            {{ form.patient.errors }}
+        </div>
+        <div class="col">
+            {{ form.doctor.label_tag }}
+            {{ form.doctor }}
+            {{ form.doctor.errors }}
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <div class="col">
+            {{ form.appointment_date.label_tag }}
+            {{ form.appointment_date }}
+            {{ form.appointment_date.errors }}
+            <small id="dateHelp" class="form-text text-muted">Select a date to see available slots</small>
+        </div>
+        <div class="col">
+            {{ form.appointment_time.label_tag }}
+            {{ form.appointment_time }}
+            {{ form.appointment_time.errors }}
+            <div id="availabilityInfo" class="mt-2"></div>
+        </div>
+    </div>
+    
+    <div class="mb-3">
+        {{ form.status.label_tag }}
+        {{ form.status }}
+        {{ form.status.errors }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'appointments:appointment-list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+<script>
+// Add JavaScript to check availability when doctor or date changes
+document.addEventListener('DOMContentLoaded', function() {
+    const doctorSelect = document.getElementById('id_doctor');
+    const dateInput = document.getElementById('id_appointment_date');
+    const timeInput = document.getElementById('id_appointment_time');
+    const availabilityInfo = document.getElementById('availabilityInfo');
+
+    function checkAvailability() {
+        const doctorId = doctorSelect.value;
+        const date = dateInput.value;
+        
+        if (doctorId && date) {
+            // In a real implementation, you would fetch available slots via AJAX
+            // For now we'll just show the doctor's standard availability
+            fetch(`/doctors/${doctorId}/availability/?date=${date}`)
+                .then(response => response.json())
+                .then(data => {
+                    availabilityInfo.innerHTML = 
+                        `<div class="alert alert-info">
+                            Available: ${data.available_days}<br>
+                            Hours: ${data.available_from} - ${data.available_to}
+                        </div>`;
+                });
+        }
+    }
+
+    doctorSelect.addEventListener('change', checkAvailability);
+    dateInput.addEventListener('change', checkAvailability);
+});
+</script>
+{% endblock %}

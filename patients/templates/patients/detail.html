@@ -1,0 +1,23 @@
+{% extends 'patients/base.html' %}
+
+{% block title %}{{ patient.name }}{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{{ patient.name }}</h2>
+    </div>
+    <div class="card-body">
+        <p><strong>Age:</strong> {{ patient.age }}</p>
+        <p><strong>Gender:</strong> {{ patient.get_gender_display }}</p>
+        <p><strong>Phone:</strong> {{ patient.phone_number }}</p>
+        <p><strong>Email:</strong> {{ patient.email|default:"Not provided" }}</p>
+        <p><strong>Address:</strong> {{ patient.address|default:"Not provided" }}</p>
+        
+        <div class="mt-4">
+            <a href="{% url 'patients:patient-update' patient.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'patients:patient-list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
